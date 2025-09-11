@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerSystems", "ControllerSystems.csproj", "{74946105-1A53-0699-E46A-EFCDFEB2ED07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74946105-1A53-0699-E46A-EFCDFEB2ED07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74946105-1A53-0699-E46A-EFCDFEB2ED07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74946105-1A53-0699-E46A-EFCDFEB2ED07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74946105-1A53-0699-E46A-EFCDFEB2ED07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB5BD9BF-D387-4A9E-A682-4B927B47A4FF}
+	EndGlobalSection
+EndGlobal
