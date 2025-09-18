@@ -1,0 +1,84 @@
++-----------------------------------+  1      0..*  +-------------------------------------+
+|              System               |               +            Plan                     |
+|           (Sistema)               |               |           (Plano)                   |
++-----------------------------------+               +-------------------------------------+
+| PK id: INT                        |               | PK id: INT                          |
+| nome: VARCHAR(255)                |               | FK system_id: INT                   |
+| descricao: TEXT                   |               | nome: VARCHAR(255)                  |
+| status: ENUM('ativo', 'inativo')  |               | descricao: TEXT                     |
+| created_at: TIMESTAMP             |               | status: ENUM('ativo', 'arquivado')  |
++-----------------------------------+               | is_public: BOOLEAN                  |
+                                                    | created_at: TIMESTAMP               |
+                                                    +-------------------------------------+
+
+
+                                                                          | 1
++-----------------------------------+                                     |
+|             Enterprise             |  1      0..*                       | 0..*
+|             (Empresa)              |--------------+-------------+-----------------------------------------------------+
++-----------------------------------+               |             |ItemDePrecificacao (Pricing Component)               |
+| PK id: INT                        |               |             +-----------------------------------------------------+
+| razao_social: VARCHAR(255)        |               |             | PK id: INT                                          |
+| nome_fantasia: VARCHAR(255)       |               |             | FK plan_id: INT                                     |
+| cnpj: VARCHAR(18)                 |               |             | tipo: ENUM('RECORRENTE_FIXO', 'POR_UNIDADE',        |
+| email_contato: VARCHAR(255)       |               |             |             'MEDIDO', 'PAGAMENTO_UNICO')            |
+| status: ENUM('ativo', 'inativo')  |               |             | metrica_nome: VARCHAR(100)                          |
+| created_at: TIMESTAMP             |               |             | valor_unitario: DECIMAL(10, 4)                      |
++-----------------------------------+               |             | moeda: VARCHAR(3)                                   |
+               | 1                                  |             | intervalo_cobranca: ENUM('unico', 'mensal', 'anual')|
+               |                                    |             | limite_incluido: INT                                |
+               | 0..* |             				  | created_at: TIMESTAMP                               |
++-----------------------------------+               |             +-----------------------------------------------------+
+|               User                |               |
+|              (Usuário)              |               |  0..* 1  +----------------------------------------------------+
++-----------------------------------+---------------+-----------|                      LogDeUso                      |
+| PK id: INT                        |                           |                     (Usage Log)                      |
+| FK enterprise_id: INT             |                           +----------------------------------------------------+
+| nome_completo: VARCHAR(255)       |                           | PK id: BIGINT                                      |
+| email: VARCHAR(255) (UNIQUE)      |                           | FK subscription_id: INT                            |
+| password_hash: VARCHAR(255)       |                           | metrica_nome: VARCHAR(100)                         |
+| role: ENUM('admin', 'membro')     |                           | quantidade_consumida: INT                          |
+| status: ENUM('ativo', 'inativo')  |                           | event_timestamp: TIMESTAMP                         |
+| created_at: TIMESTAMP             |                           +----------------------------------------------------+
++-----------------------------------+
+                                      1  0..* +---------------------------------------------------+
+                                     +---------|                     Assinatura                    |
+                                               |                   (Subscription)                  |
+                                               +---------------------------------------------------+
+                                               | PK id: INT                                        |
+                                               | FK enterprise_id: INT                             |
+                                               | FK plan_id: INT                                   |
+                                               | status: ENUM('trial', 'ativa', 'inadimplente',   |
+                                               |               'pausada', 'cancelada')           |
+                                               | data_inicio: DATE                                 |
+                                               | data_fim_ciclo_atual: DATE                        |
+                                               | data_cancelamento: DATE                           |
+                                               | created_at: TIMESTAMP                             |
+                                               +---------------------------------------------------+
+                                                                   | 1
+                                                                   |
+                                                                   | 0..*
+                                                        +----------------------------------------+
+                                                        |                 Fatura                 |
+                                                        |                (Invoice)               |
+                                                        +----------------------------------------+
+                                                        | PK id: INT                             | 1
+                                                        | FK subscription_id: INT                |
+                                                        | valor_total: DECIMAL(10, 2)            |
+                                                        | data_emissao: DATE                     | |
+                                                        | data_vencimento: DATE                  |
+                                                        | data_pagamento: DATE                   | | 0..*
+                                                        | status: ENUM('pendente', 'paga',       |
+                                                        |               'vencida', 'anulada')    | |
+                                                        +----------------------------------------+ |
+                                                                   +----------------------------------------+
+                                                                   |              ItemDaFatura              |
+                                                                   |             (Invoice Item)             |
+                                                                   +----------------------------------------+
+                                                                   | PK id: INT                             |
+                                                                   | FK invoice_id: INT                     |
+                                                                   | descricao: VARCHAR(255)                |
+                                                                   | quantidade: INT                        |
+                                                                   | valor_unitario: DECIMAL(10, 2)         |
+                                                                   | valor_total_item: DECIMAL(10, 2)       |
+                                                                   +----------------------------------------+
