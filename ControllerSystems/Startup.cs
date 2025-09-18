@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 using ControlSystems.Data;
+using ControlSystems.Objects.Contracts.Exceptions;
 
 
 namespace ControlSystems;
