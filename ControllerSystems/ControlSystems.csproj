@@ -22,4 +22,27 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Data\Builders\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Repositories\" />
+    <Folder Include="Objects\Contracts\" />
+    <Folder Include="Objects\Contracts\Exceptions\" />
+    <Folder Include="Objects\Contracts\Exceptions\Base\" />
+    <Folder Include="Objects\Contracts\Exceptions\Exceptions\" />
+    <Folder Include="Objects\Contracts\Responses\" />
+    <Folder Include="Objects\Dtos\DataAnnotations\" />
+    <Folder Include="Objects\Dtos\DataAnnotations\Base\" />
+    <Folder Include="Objects\Dtos\DataAnnotations\Format\" />
+    <Folder Include="Objects\Dtos\DataAnnotations\Valid\" />
+    <Folder Include="Objects\Dtos\Entities\" />
+    <Folder Include="Objects\Enums\" />
+    <Folder Include="Objects\Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Entities\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Services\Utils\" />
+  </ItemGroup>
+
 </Project>
