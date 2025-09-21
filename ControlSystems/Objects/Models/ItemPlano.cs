@@ -15,6 +15,10 @@ public class ItemPlano
 	[Required]
 	public int Id { get; set; }
 
+	[StringLength(100, ErrorMessage = "Limite de 100 caracteres atingido!")]
+	[Column("metrica")]
+	public string Metrica { get; set; }
+
 	[Required]
 	[Column("tipo")]
 	public TipoItemPlano Tipo { get; set; }
@@ -52,9 +56,10 @@ public class ItemPlano
 
 	public ItemPlano() { }
 
-	public ItemPlano(int id, TipoItemPlano tipo, int limite, string descricao, bool fixo, decimal valor, string moeda, int planoId, DateOnly created)
+	public ItemPlano(int id, string metrica, TipoItemPlano tipo, int limite, string descricao, bool fixo, decimal valor, string moeda, int planoId, DateOnly created)
 	{
 		Id = id;
+		Metrica = metrica;
 		Tipo = tipo;
 		Limite = limite;
 		Descricao = descricao;

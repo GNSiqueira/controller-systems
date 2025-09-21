@@ -13,6 +13,8 @@ public class ItemPlanoBuilder : IGenericBuilder
         {
             model.HasKey(a => a.Id);
 
+            model.Property(a => a.Metrica).HasMaxLength(100);
+
             model.Property(a => a.Tipo).IsRequired();
 
             model.Property(a => a.Limite);
@@ -34,7 +36,7 @@ public class ItemPlanoBuilder : IGenericBuilder
 
             model.HasData(new List<ItemPlano>
             {
-                new ItemPlano(1, TipoItemPlano.RECORRENTE, 0, "É um item de teste.", true, 243.56m, "BRL", 1, new DateOnly(2025, 09, 21))
+                new (1, default, TipoItemPlano.RECORRENTE, 0, "É um item de teste.", true, 243.56m, "BRL", 1, new DateOnly(2025, 09, 21))
             });
         });
     }
