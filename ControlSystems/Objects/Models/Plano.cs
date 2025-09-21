@@ -52,10 +52,10 @@ public class Plano
 	public Sistema? Sistema { get; set; }
 
 	[JsonIgnore]
-	public ICollection<Assinatura>? Assinatura { get; set; }
+	public ICollection<Assinatura>? Assinaturas { get; set; }
 
 	[JsonIgnore]
-	public ICollection<ItemPlano>? Itemplano { get; set; }
+	public ICollection<ItemPlano>? ItensPlano { get; set; }
 
 	public Plano() { }
 

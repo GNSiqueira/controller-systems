@@ -30,7 +30,7 @@ public class Sistema
 
 	// ================== RELACIONAMENTOS ==================
 	[JsonIgnore]
-	public ICollection<Plano>? Plano { get; set; }
+	public ICollection<Plano>? Planos { get; set; }
 
 	public Sistema() { }
 

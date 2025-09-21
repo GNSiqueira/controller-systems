@@ -2,9 +2,8 @@ namespace ControlSystems.Objects.Enums;
 
 public enum TipoPagamento
 {
-	PIX = 0, 
-	DEBITO = 1, 
-	CREDITO = 2,
-	BOLETO = 3
+	PIX = 1,
+	DEBITO = 2,
+	CREDITO = 3,
+	BOLETO = 4
 }
-

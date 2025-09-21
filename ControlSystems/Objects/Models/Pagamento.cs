@@ -27,11 +27,11 @@ public class Pagamento
 
 	[Required]
 	[Column("data_pagamento")]
-	public DateOnly DataPagamento { get; set; }
+	public DateTime DataPagamento { get; set; }
 
 	[Required]
 	[Column("created")]
-	public int Created { get; set; }
+	public DateOnly Created { get; set; }
 
 	// ================== RELACIONAMENTOS ==================
 	public int AssinaturaId { get; set; }
@@ -39,7 +39,7 @@ public class Pagamento
 
 	public Pagamento() { }
 
-	public Pagamento(int id, decimal valor, TipoPagamento tipo, StatusPagamento status, DateOnly dataPagamento, int assinaturaId, int created)
+	public Pagamento(int id, decimal valor, TipoPagamento tipo, StatusPagamento status, DateTime dataPagamento, int assinaturaId, DateOnly created)
 	{
 		Id = id;
 		Valor = valor;

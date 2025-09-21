@@ -54,10 +54,13 @@ public class Assinatura
 
 	public Assinatura() { }
 
-	public Assinatura(StatusAssinatura status, DateOnly dataInicio, decimal valor, int planoId, int empresaId, DateOnly created)
+	public Assinatura(int id, StatusAssinatura status, DateOnly dataInicio, DateOnly dataFim, DateOnly dataCancelamento, decimal valor, int planoId, int empresaId, DateOnly created)
 	{
+		Id = id;
 		Status = status;
 		DataInicio = dataInicio;
+		DataFim = dataFim;
+		DataCancelamento = dataCancelamento;
 		Valor = valor;
 		PlanoId = planoId;
 		EmpresaId = empresaId;
