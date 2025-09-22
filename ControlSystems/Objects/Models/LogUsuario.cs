@@ -25,21 +25,21 @@ public class LogUsuario
 	public DateTime DataEvento { get; set; }
 
 	// ================== RELACIONAMENTOS ==================
-	[Column("usuario_id")]
-	public int UsuarioId { get; set; }
+	[Column("dispositivo_id")]
+	public int DispositivoId { get; set; }
 
 	[JsonIgnore]
-	public Usuario? Usuario { get; set; }
+	public Dispositivo? Dispositivo { get; set; }
 
 	public LogUsuario() { }
 
-	public LogUsuario(int id, string metricaName, int quantidadeConsumida, DateTime dataEvento, int usuarioId)
+	public LogUsuario(int id, string metricaName, int quantidadeConsumida, DateTime dataEvento, int dispositivoId)
 	{
 		Id = id;
 		MetricaName = metricaName;
 		QuantidadeConsumida = quantidadeConsumida;
 		DataEvento = dataEvento;
-		UsuarioId = usuarioId;
+		DispositivoId = dispositivoId;
 	}
 }
 

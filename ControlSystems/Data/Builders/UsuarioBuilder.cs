@@ -25,7 +25,7 @@ public class UsuarioBuilder : IGenericBuilder
 
             model.Property(a => a.Created).IsRequired();
 
-            model.HasMany(a => a.LogsUsuario)
+            model.HasMany(a => a.Dispositivos)
                 .WithOne(a => a.Usuario)
                 .HasForeignKey(a => a.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);

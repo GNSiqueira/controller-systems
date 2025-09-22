@@ -44,7 +44,7 @@ public class Usuario
 	public Empresa? Empresa { get; set; }
 
 	[JsonIgnore]
-	public ICollection<LogUsuario>? LogsUsuario { get; set; }
+	public ICollection<Dispositivo>? Dispositivos { get; set; }
 
 	public Usuario() { }
 

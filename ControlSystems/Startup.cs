@@ -1,9 +1,17 @@
+// using statements necessários para as correções
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+// using statements que você já tinha
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
-
 using ControlSystems.Data;
 using ControlSystems.Objects.Contracts.Exceptions;
+using ControlSystems.Authentication;
+using ControlSystems.Services.Entities;
+using ControlSystems.Services.Interfaces;
 
 
 namespace ControlSystems;
@@ -17,34 +25,27 @@ public class Startup
 
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
+    // Este método é chamado em tempo de execução. Use este método para adicionar serviços ao contêiner.
     public void ConfigureServices(IServiceCollection services)
     {
-        var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        // BOA PRÁTICA: Removido o if/else de ambiente. O .NET escolherá a string de conexão
+        // do appsettings.Development.json em ambiente de dev, e do appsettings.json em produção.
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-        if (env == "Production")
-        {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-        }
-        else
-        {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-        }
-
-        //configuração do swagger
+        // CORREÇÃO: Bloco único e completo para configuração do Swagger.
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "SeniorCareManager", Version = "v1" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = @"Enter 'Bearer' [space] your token",
+                Description = "Autenticação via Token JWT. Insira 'Bearer' [espaço] e o seu token. Exemplo: 'Bearer 12345abcdef'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                Scheme = "Bearer",
+                BearerFormat = "JWT"
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -56,17 +57,16 @@ public class Startup
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header
+                        }
                     },
-                    new List<string>()
+                    new string[] {}
                 }
             });
         });
 
-        //adiciona controllers e trata a serialização Json
+        services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+
+        // Adiciona controllers e trata a serialização Json
         services.AddControllers(options =>
         {
             options.Filters.Add<HttpExceptionFilter>();
@@ -84,29 +84,44 @@ public class Startup
                 .AllowCredentials();
         }));
 
-        /*
-         //exemplo de correção da serialização Json com NewtonSoft.
-        services.AddControllers()
-            .AddNewtonsoftJson(opt =>
-                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+        // CORREÇÃO: Configuração completa da autenticação JWT Bearer.
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            var jwtSettings = Configuration.GetSection("JwtSettings");
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+            };
+        });
 
-        */
+        // Serviços essenciais e específicos da sua aplicação
+        services.AddHttpContextAccessor();
+        services.AddScoped<JwtService>();
 
-        // AutoMapper
+        // AutoMapper (se for usar no futuro)
         // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        //Scoped Repositories and Interfaces repo
-        // services.AddScoped<IProductGroupService, ProductGroupService>();
+        // Scoped SERVICIES
+        services.AddScoped<ILoginService, LoginService>();
 
-        //Scoped Repositories and Interfaces repo
+        // Scoped REPOSITORIES
         // services.AddScoped<IProductGroupRepository, ProductGroupRepository>();
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    // Este método é chamado em tempo de execução. Use este método para configurar o pipeline de requisições HTTP.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
@@ -116,16 +131,7 @@ public class Startup
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SeniorCareManager Web API V1");
-                // Adicione essas linhas para habilitar o botão "Authorize"
-                c.DocExpansion(DocExpansion.None);
-                c.DisplayRequestDuration();
-                c.EnableDeepLinking();
-                c.EnableFilter();
-                c.ShowExtensions();
-                c.EnableValidator();
-                c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete);
-                c.OAuthClientId("swagger-ui");
-                c.OAuthAppName("Swagger UI");
+                c.DocExpansion(DocExpansion.None); // Mantém os endpoints recolhidos
             });
         }
         else
@@ -134,12 +140,17 @@ public class Startup
             app.UseHsts();
         }
 
-        // app.UseHttpsRedirection();
+        // BOA PRÁTICA: Habilitando o redirecionamento para HTTPS.
+        app.UseHttpsRedirection();
+
         app.UseRouting();
 
+        // A ordem aqui é importante: CORS primeiro.
         app.UseCors("MyPolicy");
 
-        // app.UseAuthorization();
+        // Depois Autenticação e Autorização.
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

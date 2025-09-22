@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<Plano> Planos { get; set; }
     public DbSet<Sistema> Sistemas { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Dispositivo> Dispositivos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +30,6 @@ public class AppDbContext : DbContext
         PlanoBuilder.Build(modelBuilder);
         SistemaBuilder.Build(modelBuilder);
         UsuarioBuilder.Build(modelBuilder);
+        DispositivoBuilder.Build(modelBuilder);
     }
 }
