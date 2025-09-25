@@ -12,6 +12,9 @@ using ControlSystems.Objects.Contracts.Exceptions;
 using ControlSystems.Authentication;
 using ControlSystems.Services.Entities;
 using ControlSystems.Services.Interfaces;
+using ControlSystems.Data.Interfaces;
+using ControlSystems.Objects.Models;
+using ControlSystems.Data.Repositories;
 
 
 namespace ControlSystems;
@@ -116,7 +119,7 @@ public class Startup
         services.AddScoped<ILoginService, LoginService>();
 
         // Scoped REPOSITORIES
-        // services.AddScoped<IProductGroupRepository, ProductGroupRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         services.AddEndpointsApiExplorer();
     }

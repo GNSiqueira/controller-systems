@@ -1,6 +1,8 @@
 using System;
 using ControlSystems.Authentication;
 using ControlSystems.Controllers.Dtos;
+using ControlSystems.Data.Interfaces;
+using ControlSystems.Objects.Models;
 using ControlSystems.Services.Interfaces;
 using ControlSystems.Services.Utils;
 
@@ -8,30 +10,31 @@ namespace ControlSystems.Services.Entities;
 
 public class LoginService : ILoginService
 {
-    private JwtService Token;
+    private JwtService _token;
 
-    public LoginService(JwtService token)
+    private IUsuarioRepository _repository;
+
+    public LoginService(JwtService token, IUsuarioRepository repository)
     {
-        Token = token;
+        _token = token;
+        _repository = repository;
     }
 
     public Task<List<InfoToken>> GetInfo()
     {
-        var info = Token.GetInfoToken();
+        var info = _token.GetInfoToken();
 
         return Task.FromResult(info);
     }
 
     public async Task<string> Login(LoginRequest login)
     {
-        var infos = new List<InfoToken>
-        {
-            new() { Name = "teste", Value = "teste" },
-            new() { Name = "teste2", Value = "teste2" },
-            new() { Name = "teste3", Value = "teste3" }
-        };
+        var user = _repository.GetByLogin(login.Login, login.Password);
+        return "dafsdf";
+    }
 
-        return Token.GenerateJwtToken(infos);
-
+    private Usuario ValidateUser()
+    {
+        return new Usuario();
     }
 }
