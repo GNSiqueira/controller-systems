@@ -121,7 +121,7 @@ public class Startup
         // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         // Scoped SERVICIES
-        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IAuthService, UsuarioService>();
 
         // Scoped REPOSITORIES
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();

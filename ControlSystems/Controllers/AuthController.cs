@@ -11,12 +11,12 @@ namespace ControlSystems.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class LoginController : Controller
+public class AuthController : Controller
 {
 
-    private readonly ILoginService _service;
+    private readonly IAuthService _service;
 
-    public LoginController(ILoginService service)
+    public AuthController(IAuthService service)
     {
         _service = service;
     }
@@ -29,9 +29,10 @@ public class LoginController : Controller
         return Response<string>.Ok(await _service.Login(login), "Token de validação");
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetInfo()
+    [HttpPost]
+    public async Task<IActionResult> LogoutAllDevices()
     {
-        return Response<List<InfoToken>>.Ok(await _service.GetInfo(), "Informaçẽos que estão dentro do Token.");
+        await _service.LogoutDevicesByUsers();
+        return Response<object>.NoContent();
     }
 }

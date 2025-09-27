@@ -10,7 +10,7 @@ using ControlSystems.Services.Utils;
 
 namespace ControlSystems.Services.Entities;
 
-public class LoginService : ILoginService
+public class UsuarioService : IAuthService
 {
     private JwtService _token;
 
@@ -18,18 +18,18 @@ public class LoginService : ILoginService
 
     private IDispositivoRepository _device;
 
-    public LoginService(JwtService token, IUsuarioRepository repository, IDispositivoRepository device)
+    public UsuarioService(JwtService token, IUsuarioRepository repository, IDispositivoRepository device)
     {
         _token = token;
         _user = repository;
         _device = device;
     }
 
-    public Task<List<InfoToken>> GetInfo()
+    public async Task LogoutDevicesByUsers()
     {
-        var info = _token.GetInfoToken();
+        var user = await _user.GetById(Convert.ToInt32(_token.GetInfoToken().Find(a => a.Name == "id")?.Value));
 
-        return Task.FromResult(info);
+        await _device.DeslogarDispositivos(user.Id);
     }
 
     public async Task<string> Login(LoginRequest login)

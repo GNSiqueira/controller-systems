@@ -4,8 +4,9 @@ using ControlSystems.Services.Utils;
 
 namespace ControlSystems.Services.Interfaces;
 
-public interface ILoginService
+public interface IAuthService
 {
     Task<string> Login(LoginRequest login);
-    Task<List<InfoToken>> GetInfo();
+    Task LogoutDevicesByUsers();
+
 }
