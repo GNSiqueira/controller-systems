@@ -15,17 +15,17 @@ public class NumValidator : BaseAnnotation
     {
         if (!decimal.TryParse(Value.ToString(), out var valor))
         {
-            return ReturnError(NameProperty, "O valor informado não é numérico.");
+            return ReturnError(NameProperty?? string.Empty, "O valor informado não é numérico.");
         }
 
-        if (!decimal.TryParse(Parameters[0].ToString(), out var minValue))
+        if (Parameters == null || Parameters.Length == 0 || Parameters[0] == null || !decimal.TryParse(Parameters[0].ToString(), out var minValue))
         {
-            return ReturnError(NameProperty, "O parâmetro mínimo é inválido.");
+            return ReturnError(NameProperty?? string.Empty, "O parâmetro mínimo é inválido.");
         }
 
         if (valor < minValue)
         {
-            return ReturnError(NameProperty, $"O valor {valor} é menor que o mínimo permitido ({minValue}).");
+            return ReturnError(NameProperty?? string.Empty, $"O valor {valor} é menor que o mínimo permitido ({minValue}).");
         }
 
         return null;

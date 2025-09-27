@@ -12,7 +12,7 @@ public class UfValidator : BaseAnnotation
     }
     public override FieldError? Execute()
     {
-        string uf = Value?.ToString().ToUpper();
+        string uf = Value?.ToString()?.ToUpper() ?? string.Empty;
 
         string[] ufs = {
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
@@ -21,7 +21,7 @@ public class UfValidator : BaseAnnotation
         };
 
         if (!ufs.Contains(uf))
-            return ReturnError(NameProperty, $"UF inválida: '{uf}' não é reconhecida como uma unidade federativa brasileira.");
+            return ReturnError(NameProperty?? string.Empty, $"UF inválida: '{uf}' não é reconhecida como uma unidade federativa brasileira.");
 
         return null;
     }

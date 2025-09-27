@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ControlSystems.Services.Utils;
+using ControlSystems.Objects.Contracts.Exceptions.Exceptions;
 
 namespace ControlSystems.Authentication;
 
@@ -22,7 +23,10 @@ public class JwtService : Controller
     public string GenerateJwtToken(List<InfoToken> infoToken)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+        var keyString = jwtSettings["Key"];
+        if (string.IsNullOrEmpty(keyString))
+            throw new ArgumentException("JwtSettings:Key não está configurado.");
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>();
@@ -37,7 +41,9 @@ public class JwtService : Controller
             issuer: jwtSettings["Issuer"],
             audience: jwtSettings["Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpireMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(
+                double.TryParse(jwtSettings["ExpireMinutes"], out var expireMinutes) ? expireMinutes : 60
+            ),
             // expires: DateTime.MaxValue,
             signingCredentials: creds
         );
@@ -47,7 +53,10 @@ public class JwtService : Controller
 
     public List<InfoToken> GetInfoToken()
     {
-        string token = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"];
+        var tokenHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"];
+        if (string.IsNullOrEmpty(tokenHeader))
+            throw new ExceptionBadRequest("Cabeçalho de autorização não fornecido.");
+        string token = tokenHeader!;
 
         token = ExtractToken(token);
 

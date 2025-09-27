@@ -5,8 +5,8 @@ namespace ControlSystems.Objects.Dtos.DataAnnotations.Base;
 [AttributeUsage(AttributeTargets.Property)]
 public abstract class BaseAnnotation : Attribute
 {
-    private PropertyInfo _property;
-    private object _value;
+    private PropertyInfo? _property;
+    private object? _value;
 
     public string ErrorMessage { get; set; } = null!;
 
@@ -18,7 +18,7 @@ public abstract class BaseAnnotation : Attribute
         set => SetValue(value);
     }
 
-    protected string NameProperty;
+    protected string? NameProperty;
 
     public BaseAnnotation(params object[]? parameters)
     {
@@ -36,11 +36,15 @@ public abstract class BaseAnnotation : Attribute
 
     protected object GetValue()
     {
-        return _property.GetValue(_value);
+        if (_property == null)
+            throw new InvalidOperationException("PropertyInfo is not initialized.");
+        return _property.GetValue(_value)!;
     }
 
     protected void SetValue(object newValue)
     {
+        if (_property == null)
+            throw new InvalidOperationException("PropertyInfo is not initialized.");
         _property.SetValue(_value, newValue);
     }
 

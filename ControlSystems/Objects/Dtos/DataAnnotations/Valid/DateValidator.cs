@@ -15,32 +15,35 @@ public class DateValidator : BaseAnnotation
     {
         if (Value is not DateTime date)
         {
-            return ReturnError(NameProperty, "Valor informado não é uma data válida.");
+            return ReturnError(NameProperty ?? string.Empty, "Valor informado não é uma data válida.");
         }
 
         DateTime? minDate = null;
 
-        foreach (var param in Parameters)
+        if (Parameters != null)
         {
-            if (param is DateTime dt)
+            foreach (var param in Parameters)
             {
-                minDate = dt;
-                break;
-            }
-            else if (param is string str && DateTime.TryParse(str, out var parsed))
-            {
-                minDate = parsed;
-                break;
-            }
-            else
-            {
-                return ReturnError(NameProperty, "Parâmetro inválido para data mínima.");
+                if (param is DateTime dt)
+                {
+                    minDate = dt;
+                    break;
+                }
+                else if (param is string str && DateTime.TryParse(str, out var parsed))
+                {
+                    minDate = parsed;
+                    break;
+                }
+                else
+                {
+                    return ReturnError(NameProperty ?? string.Empty, "Parâmetro inválido para data mínima.");
+                }
             }
         }
 
         if (minDate.HasValue && date < minDate.Value)
         {
-            return ReturnError(NameProperty, $"A data não pode ser anterior a {minDate:dd/MM/yyyy}.");
+            return ReturnError(NameProperty ?? string.Empty, $"A data não pode ser anterior a {minDate:dd/MM/yyyy}.");
         }
         return null;
     }

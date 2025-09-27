@@ -17,10 +17,10 @@ public class EmailValidator : BaseAnnotation
 
     public override FieldError? Execute()
     {
-        string valor = Value?.ToString();
+        string valor = Value?.ToString() ?? string.Empty;
 
         if (!_emailRegex.IsMatch(valor))
-            return ReturnError(NameProperty, "Email inválido.");
+            return ReturnError(NameProperty ?? string.Empty, "Email inválido.");
 
         return null;
     }

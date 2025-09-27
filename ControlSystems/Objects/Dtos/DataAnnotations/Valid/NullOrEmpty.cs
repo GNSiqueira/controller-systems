@@ -12,10 +12,14 @@ public class NullOrEmpty : BaseAnnotation
     }
     public override FieldError? Execute()
     {
-        string valor = Value?.ToString();
+        string? valor = Value?.ToString();
 
         if (string.IsNullOrWhiteSpace(valor))
+        {
+            if (NameProperty == null)
+                throw new ArgumentNullException(nameof(NameProperty), "O nome da propriedade não pode ser nulo.");
             return ReturnError(NameProperty, "O campo não pode ser nulo ou vazio.");
+        }
 
         return null;
     }

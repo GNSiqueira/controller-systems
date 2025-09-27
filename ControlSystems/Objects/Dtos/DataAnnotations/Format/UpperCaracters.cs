@@ -12,7 +12,7 @@ public class UpperCaracters : BaseAnnotation
     }
     public override FieldError? Execute()
     {
-        string valor = Value?.ToString().ToUpper();
+        string valor = Value?.ToString()?.ToUpper() ?? string.Empty;
 
         SetValue(valor);
 

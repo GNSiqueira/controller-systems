@@ -12,7 +12,7 @@ public class RemoveSpaces : BaseAnnotation
     }
     public override FieldError? Execute()
     {
-        string valor = Value?.ToString().Trim();
+        string valor = Value?.ToString()?.Trim() ?? string.Empty;
 
         SetValue(valor);
 

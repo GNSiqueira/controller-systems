@@ -9,25 +9,25 @@ public class CpfCnpjFormat : BaseAnnotation
 
     public override FieldError? Execute()
     {
-        string cpfCnpj = new string(Value.ToString().Where(char.IsDigit).ToArray());
+        string cpfCnpj = Value == null ? string.Empty : new string((Value?.ToString() ?? string.Empty).Where(char.IsDigit).ToArray());
 
         if (cpfCnpj.Length == 11)
         {
             if (!ValidarCpf(cpfCnpj))
-                return ReturnError(NameProperty, "CPF inválido.");
+                return ReturnError(NameProperty ?? string.Empty, "CPF inválido.");
             else
                 SetValue(cpfCnpj);
         }
         else if (cpfCnpj.Length == 14)
         {
             if (!ValidarCnpj(cpfCnpj))
-                return ReturnError(NameProperty, "CNPJ inválido.");
+                return ReturnError(NameProperty ?? string.Empty, "CNPJ inválido.");
             else
                 SetValue(cpfCnpj);
         }
         else
         {
-            return ReturnError(NameProperty, "O campo deve conter um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.");
+            return ReturnError(NameProperty ?? string.Empty, "O campo deve conter um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.");
         }
 
         return null;
