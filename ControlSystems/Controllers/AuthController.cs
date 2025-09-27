@@ -2,7 +2,6 @@ using ControlSystems.Controllers.Dtos;
 using ControlSystems.Objects.Contracts;
 using ControlSystems.Objects.Dtos.DataAnnotations.Base;
 using ControlSystems.Services.Interfaces;
-using ControlSystems.Services.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,17 +22,23 @@ public class AuthController : Controller
     }
 
     [AllowAnonymous]
-    [HttpPatch("login"), MapToApiVersion("1")]
+    [HttpPost("login"), MapToApiVersion("1")]
     public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
         Execute.Executar(login);
         return Response<string>.Ok(await _service.Login(login), "Token de validação");
     }
 
-    [HttpPost("logout-all-devices"), MapToApiVersion("1")]
+    [HttpPatch("logout-all-devices"), MapToApiVersion("1")]
     public async Task<IActionResult> LogoutAllDevices()
     {
         await _service.LogoutDevicesByUsers();
         return Response<object>.NoContent();
+    }
+
+    [HttpGet("refresh-token"), MapToApiVersion("1")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        return Response<string>.Ok(await _service.ReloadToken(), "Novo token");
     }
 }

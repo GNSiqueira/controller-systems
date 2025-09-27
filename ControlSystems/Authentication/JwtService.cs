@@ -49,7 +49,7 @@ public class JwtService : Controller
             audience: jwtSettings["Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(
-                double.TryParse(jwtSettings["ExpireMinutes"], out var expireMinutes) ? expireMinutes : 60
+                double.Parse(jwtSettings["ExpireMinutes"])
             ),
             // expires: DateTime.MaxValue,
             signingCredentials: creds
