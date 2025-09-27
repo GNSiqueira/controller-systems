@@ -24,6 +24,13 @@ public class JwtService : Controller
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
         var keyString = jwtSettings["Key"];
+
+        const int minimumKeySizeInBytes = 32; // 256 bits
+        if (string.IsNullOrEmpty(keyString) || Encoding.UTF8.GetBytes(keyString).Length < minimumKeySizeInBytes)
+        {
+            throw new ArgumentException($"A chave JWT (JwtSettings:Key) deve ser configurada e ter no mínimo {minimumKeySizeInBytes} bytes.");
+        }
+        
         if (string.IsNullOrEmpty(keyString))
             throw new ArgumentException("JwtSettings:Key não está configurado.");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
@@ -74,7 +81,7 @@ public class JwtService : Controller
         return infos;
     }
 
-    public string ExtractToken(string token)
+    private string ExtractToken(string token)
     {
         if (string.IsNullOrEmpty(token) || !token.StartsWith("Bearer "))
             throw new ArgumentException("Token não fornecido ou inválido.");

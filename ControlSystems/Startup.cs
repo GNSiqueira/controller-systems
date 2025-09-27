@@ -125,6 +125,7 @@ public class Startup
 
         // Scoped REPOSITORIES
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IDispositivoRepository, DispositivoRepository>();
 
         services.AddEndpointsApiExplorer();
     }

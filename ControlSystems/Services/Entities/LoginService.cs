@@ -14,12 +14,15 @@ public class LoginService : ILoginService
 {
     private JwtService _token;
 
-    private IUsuarioRepository _repository;
+    private IUsuarioRepository _user;
 
-    public LoginService(JwtService token, IUsuarioRepository repository)
+    private IDispositivoRepository _device;
+
+    public LoginService(JwtService token, IUsuarioRepository repository, IDispositivoRepository device)
     {
         _token = token;
-        _repository = repository;
+        _user = repository;
+        _device = device;
     }
 
     public Task<List<InfoToken>> GetInfo()
@@ -31,7 +34,7 @@ public class LoginService : ILoginService
 
     public async Task<string> Login(LoginRequest login)
     {
-        var user = await _repository.GetUserByLogin(login.Login, login.Password);
+        var user = await _user.GetUserByLogin(login.Login, login.Password);
 
         if (user == null || user.Status != YesNo.YES)
             throw new ExceptionBadRequest("Usuário ou senha inválidos.");
@@ -70,12 +73,32 @@ public class LoginService : ILoginService
 
         var datenow = DateTime.Now;
 
-        // if (new [] {StatusAssinatura.ATIVO, StatusAssinatura.ATIVO, StatusAssinatura.AGUARDANDO_PAGAMENTO}.Contains(ass.Status))
-        //     if (ass.DataFim?.ToDateTime(TimeOnly.MinValue) > )
-                
+        datenow = new DateTime(datenow.Year, datenow.Month, datenow.Day, 23, 59, 0);
 
+        if (!new[] { StatusAssinatura.ATIVO, StatusAssinatura.TRIAL, StatusAssinatura.AGUARDANDO_PAGAMENTO }.Contains(ass.Status))
+            throw new ExceptionForbidden("Essa assinatura está cancelada ou está inadimplente!");
 
-        throw new NotImplementedException();
+        if (ass.DataFim < DateOnly.FromDateTime(datenow))
+            throw new ExceptionForbidden("Pagamento pendente!");
+
+        await _device.DeslogarDispositivos(user.Id);
+
+        var dispositivo = await _device.GetByName(login.Dispositivo);
+
+        if (dispositivo == null)
+            await _device.Create(new Dispositivo(0, login.Dispositivo, YesNo.YES, user.Id));
+        else
+        {
+            dispositivo.Logado = YesNo.YES;
+            await _device.Update(dispositivo);
+        }
+
+        List<InfoToken> infos = new List<InfoToken> {
+            new() { Name = "id", Value = user.Id.ToString()},
+            new() { Name = "device", Value = login.Dispositivo}
+        };
+
+        return _token.GenerateJwtToken(infos);
     }
 
 }

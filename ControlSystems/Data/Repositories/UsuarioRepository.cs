@@ -28,6 +28,7 @@ public class UsuarioRepository : IUsuarioRepository
                 .ThenInclude(u => u.Assinaturas)
                     .ThenInclude(u => u.Plano)
                         .ThenInclude(u => u.Sistema)
+            .Include(u => u.Dispositivos)
             .FirstOrDefaultAsync(p => p.Email == login && p.Password == pass);
     }
 }

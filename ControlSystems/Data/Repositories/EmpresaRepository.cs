@@ -18,8 +18,4 @@ public class EmpresaRepository : IEmpresaRepository
         this._db = _context.Set<Empresa>();
     }
 
-    public async Task<Empresa> GetEmpresaByFuncionario(int id)
-    {
-        throw new NotImplementedException();
-    }
 }
