@@ -15,6 +15,7 @@ using ControlSystems.Services.Interfaces;
 using ControlSystems.Data.Interfaces;
 using ControlSystems.Objects.Models;
 using ControlSystems.Data.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace ControlSystems;
@@ -65,6 +66,14 @@ public class Startup
                     new string[] {}
                 }
             });
+        });
+
+        // VERSÃO DA API
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
         });
 
         services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));

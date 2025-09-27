@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControlSystems.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/auth")]
 [ApiController]
 [Authorize]
+[ApiVersion("1")]
 public class AuthController : Controller
 {
 
@@ -22,14 +23,14 @@ public class AuthController : Controller
     }
 
     [AllowAnonymous]
-    [HttpPatch]
+    [HttpPatch("login"), MapToApiVersion("1")]
     public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
         Execute.Executar(login);
         return Response<string>.Ok(await _service.Login(login), "Token de validação");
     }
 
-    [HttpPost]
+    [HttpPost("logout-all-devices"), MapToApiVersion("1")]
     public async Task<IActionResult> LogoutAllDevices()
     {
         await _service.LogoutDevicesByUsers();
