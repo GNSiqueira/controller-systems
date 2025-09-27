@@ -1,6 +1,5 @@
-// Em: ControlSystems/Data/Builders/EmpresaBuilder.cs
-
 using ControlSystems.Data.Interfaces;
+using ControlSystems.Objects.Enums;
 using ControlSystems.Objects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,7 +44,7 @@ public class EmpresaBuilder : IGenericBuilder
             entity.HasData(new Empresa
             {
                 Id = 1,
-                Status = true,
+                Status = YesNo.YES,
                 RazaoSocial = "EMPRESA MODELO LTDA",
                 NomeFantasia = "Empresa Modelo",
                 CnpjCpf = "12345678000199",

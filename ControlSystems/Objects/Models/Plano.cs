@@ -17,6 +17,10 @@ public class Plano
 	public string? Nome { get; set; }
 
 	[Required]
+	[Column("modalidade")]
+	public ModalidadePagamento Modalidade { get; set; }
+
+	[Required]
 	[Column("descricao")]
 	public string? Descricao { get; set; }
 
@@ -26,11 +30,11 @@ public class Plano
 
 	[Required]
 	[Column("status")]
-	public bool Status { get; set; }
+	public YesNo Status { get; set; }
 
 	[Required]
 	[Column("is_public")]
-	public bool IsPublic { get; set; }
+	public YesNo IsPublic { get; set; }
 
 	[Required]
 	[Column("intervalo_cobranca")]
@@ -59,10 +63,11 @@ public class Plano
 
 	public Plano() { }
 
-	public Plano(int id, string nome, string descricao, TipoPlano tipo, bool status, bool isPublic, TipoIntervalo intervaloCobranca, int intervalo, DateOnly created, int sistemaId)
+	public Plano(int id, string nome,  string descricao, ModalidadePagamento modalidade, TipoPlano tipo, YesNo status, YesNo isPublic, TipoIntervalo intervaloCobranca, int intervalo, DateOnly created, int sistemaId)
 	{
 		Id = id;
 		Nome = nome;
+		Modalidade = modalidade;
 		Descricao = descricao;
 		Tipo = tipo;
 		Status = status;

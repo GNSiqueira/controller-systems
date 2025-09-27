@@ -36,7 +36,7 @@ public class ItemPlanoBuilder : IGenericBuilder
 
             model.HasData(new List<ItemPlano>
             {
-                new (1, string.Empty, TipoItemPlano.RECORRENTE, 0, "É um item de teste.", true, 243.56m, "BRL", 1, new DateOnly(2025, 09, 21))
+                new (1, string.Empty, TipoItemPlano.RECORRENTE, 0, "É um item de teste.", YesNo.YES, 243.56m, "BRL", 1, new DateOnly(2025, 09, 21))
             });
         });
     }

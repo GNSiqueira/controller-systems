@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using ControlSystems.Objects.Enums;
 
 namespace ControlSystems.Objects.Models;
 
@@ -22,7 +23,7 @@ public class Sistema
 
 	[Required]
 	[Column("status")]
-	public bool Status { get; set; }
+	public YesNo Status { get; set; }
 
 	[Required]
 	[Column("created")]
@@ -34,7 +35,7 @@ public class Sistema
 
 	public Sistema() { }
 
-	public Sistema(int id, string nome, string descricao, bool status, DateOnly created)
+	public Sistema(int id, string nome, string descricao, YesNo status, DateOnly created)
 	{
 		Id = id;
 		Nome = nome;

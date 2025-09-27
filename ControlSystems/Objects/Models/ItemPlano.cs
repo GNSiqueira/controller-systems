@@ -31,7 +31,7 @@ public class ItemPlano
 
 	[Required]
 	[Column("fixo")]
-	public bool Fixo { get; set; }
+	public YesNo Fixo { get; set; }
 
 	[Required]
 	[Column("valor")]
@@ -56,7 +56,7 @@ public class ItemPlano
 
 	public ItemPlano() { }
 
-	public ItemPlano(int id, string metrica, TipoItemPlano tipo, int limite, string descricao, bool fixo, decimal valor, string moeda, int planoId, DateOnly created)
+	public ItemPlano(int id, string metrica, TipoItemPlano tipo, int limite, string descricao, YesNo fixo, decimal valor, string moeda, int planoId, DateOnly created)
 	{
 		Id = id;
 		Metrica = metrica;

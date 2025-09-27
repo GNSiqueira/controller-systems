@@ -21,7 +21,7 @@ public class UsuarioBuilder : IGenericBuilder
 
             model.Property(a => a.TipoUsuario).IsRequired();
 
-            model.Property(a => a.Status).HasDefaultValue(true).IsRequired();
+            model.Property(a => a.Status).IsRequired();
 
             model.Property(a => a.Created).IsRequired();
 
@@ -37,7 +37,7 @@ public class UsuarioBuilder : IGenericBuilder
 
             model.HasData(new List<Usuario>
             {
-                new(1, "Neto", "gabriel@gmail.com", "hash_de_senha_segura_aqui", TipoUsuario.ADMIN, true, new DateOnly(2025, 9, 21), 1)
+                new(1, "Neto", "gabriel", "123", TipoUsuario.ADMIN, YesNo.YES, new DateOnly(2025, 9, 21), 1)
 
             });
         });

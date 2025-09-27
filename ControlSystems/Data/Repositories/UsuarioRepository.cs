@@ -18,8 +18,16 @@ public class UsuarioRepository : IUsuarioRepository
         this._db = _context.Set<Usuario>();
     }
 
-    public async Task<Usuario> GetByLogin(string login, string pass)
+    public async Task<Usuario> GetUserByLogin(string login, string pass)
     {
-        return await _db.FirstOrDefaultAsync(p => p.Email == login && p.Password == pass);
+        return await _db
+            .Include(u => u.Empresa)
+                .ThenInclude(u => u.Assinaturas)
+                    .ThenInclude(u => u.Pagamentos)
+            .Include(u => u.Empresa)
+                .ThenInclude(u => u.Assinaturas)
+                    .ThenInclude(u => u.Plano)
+                        .ThenInclude(u => u.Sistema)
+            .FirstOrDefaultAsync(p => p.Email == login && p.Password == pass);
     }
 }

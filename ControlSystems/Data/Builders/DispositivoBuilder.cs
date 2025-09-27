@@ -1,5 +1,6 @@
 using System;
 using ControlSystems.Data.Interfaces;
+using ControlSystems.Objects.Enums;
 using ControlSystems.Objects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ public class DispositivoBuilder : IGenericBuilder
                 .HasForeignKey(a => a.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            model.HasData(new Dispositivo(1, "acernitro5", true, 1));
+            model.HasData(new Dispositivo(1, "acernitro5", YesNo.YES, 1));
         });
     }
 }

@@ -15,13 +15,15 @@ public class PlanoBuilder : IGenericBuilder
 
             model.Property(a => a.Nome).HasMaxLength(100).IsRequired();
 
+            model.Property(a => a.Modalidade).IsRequired();
+
             model.Property(a => a.Descricao).HasColumnType("TEXT");
 
             model.Property(a => a.Tipo).IsRequired();
 
-            model.Property(a => a.Status).HasDefaultValue(true).IsRequired();
+            model.Property(a => a.Status).IsRequired();
 
-            model.Property(a => a.IsPublic).HasDefaultValue(true).IsRequired();
+            model.Property(a => a.IsPublic).IsRequired();
 
             model.Property(a => a.IntervaloCobranca).IsRequired();
 
@@ -46,7 +48,7 @@ public class PlanoBuilder : IGenericBuilder
 
             model.HasData(new List<Plano>
             {
-                new(1, "Plano teste", "", TipoPlano.RECORRENTE, true, true,TipoIntervalo.MES, 1, new DateOnly(2025, 09, 21), 1)
+                new(1, "Plano teste", "", ModalidadePagamento.PRE_PAGO, TipoPlano.RECORRENTE, YesNo.YES, YesNo.YES,TipoIntervalo.MES, 1, new DateOnly(2025, 09, 21), 1)
             });
         });
     }

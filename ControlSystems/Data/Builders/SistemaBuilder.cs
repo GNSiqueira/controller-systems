@@ -1,4 +1,5 @@
 using ControlSystems.Data.Interfaces;
+using ControlSystems.Objects.Enums;
 using ControlSystems.Objects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,7 @@ public class SistemaBuilder : IGenericBuilder
 
             model.Property(a => a.Descricao).HasColumnType("TEXT").IsRequired();
 
-            model.Property(a => a.Status).HasDefaultValue(true).IsRequired();
+            model.Property(a => a.Status).IsRequired();
 
             model.Property(a => a.Created).IsRequired();
 
@@ -27,7 +28,7 @@ public class SistemaBuilder : IGenericBuilder
 
             model.HasData(new List<Sistema>
             {
-                new Sistema(1, "Sistema Teste", "Sistema testezinho", true, new DateOnly(2025, 09, 21))
+                new Sistema(1, "Sistema Teste", "Sistema testezinho", YesNo.YES, new DateOnly(2025, 09, 21))
             });
         });
     }

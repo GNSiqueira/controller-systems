@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using ControlSystems.Objects.Enums;
 
 namespace ControlSystems.Objects.Models;
 
@@ -17,7 +18,7 @@ public class Dispositivo
 
     [Required]
     [Column("logado")]
-    public bool Logado { get; set; }
+    public YesNo Logado { get; set; }
 
     // Relacionamentos
 
@@ -32,7 +33,7 @@ public class Dispositivo
 
     public Dispositivo() { }
 
-    public Dispositivo(int id, string informacao, bool logado, int usuarioId)
+    public Dispositivo(int id, string informacao, YesNo logado, int usuarioId)
     {
         Id = id;
         Informacao = informacao;

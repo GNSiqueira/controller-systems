@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using ControlSystems.Objects.Enums;
 
 namespace ControlSystems.Objects.Models;
 
@@ -13,7 +14,7 @@ public class Empresa
 
 	[Required]
 	[Column("status")]
-	public bool Status { get; set; }
+	public YesNo Status { get; set; }
 
 	[Required]
 	[Column("cnpj_cpf")]
@@ -48,7 +49,7 @@ public class Empresa
 
 	public Empresa() {}
 
-	public Empresa(int id, bool status, string cnpjCpf, string nameFantasia, string razaoSocial, string telefone, string email, DateOnly created)
+	public Empresa(int id, YesNo status, string cnpjCpf, string nameFantasia, string razaoSocial, string telefone, string email, DateOnly created)
 	{
 		Id = id;
 		Status = status;

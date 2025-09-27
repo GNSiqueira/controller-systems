@@ -30,7 +30,7 @@ public class Usuario
 
 	[Required]
 	[Column("status")]
-	public bool Status { get; set; }
+	public YesNo Status { get; set; }
 
 	[Required]
 	[Column("created")]
@@ -48,7 +48,7 @@ public class Usuario
 
 	public Usuario() { }
 
-	public Usuario(int id, string nome, string email, string password, TipoUsuario tipoUsuario, bool status, DateOnly created, int empresaId)
+	public Usuario(int id, string nome, string email, string password, TipoUsuario tipoUsuario, YesNo status, DateOnly created, int empresaId)
 	{
 		Id = id;
 		Nome = nome;
