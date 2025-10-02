@@ -15,6 +15,11 @@ public class GenericRepositoryRead<T> : IGenericRepositoryRead<T> where T : clas
         this._dbSet = _context.Set<T>();
     }
 
+    public async Task<IEnumerable<T>> GetAll()
+    {
+        return await _dbSet.ToListAsync();
+    }
+
     public async Task<T> GetById(int id)
     {
         return await _dbSet.FindAsync(id);

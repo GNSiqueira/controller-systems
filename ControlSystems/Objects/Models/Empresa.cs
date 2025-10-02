@@ -10,7 +10,7 @@ public class Empresa
 {
 	[Key]
 	[Column("id")]
-	public int Id { get; set;}
+	public int Id { get; set; }
 
 	[Required]
 	[Column("status")]
@@ -45,9 +45,9 @@ public class Empresa
 	public ICollection<Assinatura>? Assinaturas { get; set; }
 
 	[JsonIgnore]
-	public ICollection<Usuario>? Usuarios { get; set;}
+	public ICollection<Usuario>? Usuarios { get; set; }
 
-	public Empresa() {}
+	public Empresa() { }
 
 	public Empresa(int id, YesNo status, string cnpjCpf, string nameFantasia, string razaoSocial, string telefone, string email, DateOnly created)
 	{

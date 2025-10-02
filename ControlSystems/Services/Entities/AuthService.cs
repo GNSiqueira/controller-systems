@@ -1,7 +1,7 @@
 using ControlSystems.Authentication;
-using ControlSystems.Controllers.Dtos;
 using ControlSystems.Data.Interfaces;
 using ControlSystems.Objects.Contracts.Exceptions.Exceptions;
+using ControlSystems.Objects.Dtos.Entities;
 using ControlSystems.Objects.Enums;
 using ControlSystems.Objects.Models;
 using ControlSystems.Services.Interfaces;
@@ -9,7 +9,7 @@ using ControlSystems.Services.Utils;
 
 namespace ControlSystems.Services.Entities;
 
-public class UsuarioService : IAuthService
+public class AuthService : IAuthService
 {
     private JwtService _token;
 
@@ -17,7 +17,7 @@ public class UsuarioService : IAuthService
 
     private IDispositivoRepository _device;
 
-    public UsuarioService(JwtService token, IUsuarioRepository repository, IDispositivoRepository device)
+    public AuthService(JwtService token, IUsuarioRepository repository, IDispositivoRepository device)
     {
         _token = token;
         _user = repository;
@@ -31,7 +31,7 @@ public class UsuarioService : IAuthService
         await _device.DeslogarDispositivos(user.Id);
     }
 
-    public async Task<string> Login(LoginRequest login)
+    public async Task<string> Login(LoginRequestDTO login)
     {
         var user = await _user.GetUserByLogin(login.Login, login.Password);
 
@@ -103,7 +103,7 @@ public class UsuarioService : IAuthService
     public async Task<string> ReloadToken()
     {
         var token = _token.GetInfoToken();
-        var user = await _user.GetById(Convert.ToInt32(token.Find(a => a.Name =="id").Value));
+        var user = await _user.GetById(Convert.ToInt32(token.Find(a => a.Name == "id").Value));
 
         if (user == null)
             throw new ExceptionNotFound("Usuário não encontrado");
@@ -159,7 +159,7 @@ public class UsuarioService : IAuthService
 
         if (dispositivo == null || dispositivo.Logado != YesNo.YES)
             throw new ExceptionBadRequest("Token não encontrado!");
-            
+
 
         List<InfoToken> infos = new List<InfoToken> {
             new() { Name = "id", Value = user.Id.ToString()},

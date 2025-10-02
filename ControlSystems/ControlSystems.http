@@ -1,4 +1,4 @@
-@ControlSystems_HostAddress = http://localhost:5287
+@ControlSystems_HostAddress = http://localhost:5287/swagger/index.html
 
 GET {{ControlSystems_HostAddress}}/weatherforecast/
 Accept: application/json

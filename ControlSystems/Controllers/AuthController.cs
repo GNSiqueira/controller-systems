@@ -1,6 +1,7 @@
-using ControlSystems.Controllers.Dtos;
 using ControlSystems.Objects.Contracts;
+using ControlSystems.Objects.Dtos;
 using ControlSystems.Objects.Dtos.DataAnnotations.Base;
+using ControlSystems.Objects.Dtos.Entities;
 using ControlSystems.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public class AuthController : Controller
 
     [AllowAnonymous]
     [HttpPost("login"), MapToApiVersion("1")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest login)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDTO login)
     {
         Execute.Executar(login);
         return Response<string>.Ok(await _service.Login(login), "Token de validação");

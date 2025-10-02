@@ -13,10 +13,9 @@ using ControlSystems.Authentication;
 using ControlSystems.Services.Entities;
 using ControlSystems.Services.Interfaces;
 using ControlSystems.Data.Interfaces;
-using ControlSystems.Objects.Models;
 using ControlSystems.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
-
+using ControlSystems.Objects.Dtos.Mappings;
 
 namespace ControlSystems;
 
@@ -127,11 +126,12 @@ public class Startup
         services.AddHttpContextAccessor();
         services.AddScoped<JwtService>();
 
-        // AutoMapper (se for usar no futuro)
-        // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        // AutoMapper
+        services.AddAutoMapper(typeof(MappingProfile));
 
         // Scoped SERVICIES
-        services.AddScoped<IAuthService, UsuarioService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
 
         // Scoped REPOSITORIES
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();

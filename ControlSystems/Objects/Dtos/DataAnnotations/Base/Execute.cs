@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Npgsql.Internal.Postgres;
 using ControlSystems.Objects.Contracts.Exceptions;
 using ControlSystems.Objects.Contracts.Exceptions.Exceptions;
 

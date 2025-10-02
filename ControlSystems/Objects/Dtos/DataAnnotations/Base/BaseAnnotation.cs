@@ -8,7 +8,7 @@ public abstract class BaseAnnotation : Attribute
     private PropertyInfo? _property;
     private object? _value;
 
-    public string ErrorMessage { get; set; } = null!;
+    private string ErrorMessage { get; set; } = null!;
 
     public object[]? Parameters { get; set; }
 
@@ -17,8 +17,8 @@ public abstract class BaseAnnotation : Attribute
         get => GetValue();
         set => SetValue(value);
     }
+    protected string NameProperty = "";
 
-    protected string? NameProperty;
 
     public BaseAnnotation(params object[]? parameters)
     {
@@ -34,18 +34,21 @@ public abstract class BaseAnnotation : Attribute
 
     public abstract FieldError? Execute();
 
-    protected object GetValue()
+    protected bool ValidNullOrEmptry()
     {
-        if (_property == null)
-            throw new InvalidOperationException("PropertyInfo is not initialized.");
-        return _property.GetValue(_value)!;
+        if (Value is null || string.IsNullOrWhiteSpace(Value.ToString()))
+            return true;
+        return false;
     }
 
-    protected void SetValue(object newValue)
+    private object GetValue()
     {
-        if (_property == null)
-            throw new InvalidOperationException("PropertyInfo is not initialized.");
-        _property.SetValue(_value, newValue);
+        return _property?.GetValue(_value)!;
+    }
+
+    private void SetValue(object newValue)
+    {
+        _property?.SetValue(_value, newValue);
     }
 
     protected FieldError ReturnError(string field, string? mensage = null)

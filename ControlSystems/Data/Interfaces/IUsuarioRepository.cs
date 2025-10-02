@@ -1,9 +1,8 @@
-using ControlSystems.Data.Repositories;
 using ControlSystems.Objects.Models;
 
 namespace ControlSystems.Data.Interfaces;
 
-public interface IUsuarioRepository : IGenericRepositoryRead<Usuario>
+public interface IUsuarioRepository : IGenericRepository<Usuario>
 {
     Task<Usuario> GetUserByLogin(string login, string pass);
 }

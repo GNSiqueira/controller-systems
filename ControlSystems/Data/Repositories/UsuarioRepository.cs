@@ -5,16 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ControlSystems.Data.Repositories;
 
-public class UsuarioRepository : GenericRepositoryRead<Usuario>, IUsuarioRepository
+public class UsuarioRepository : GenericRepository<Usuario>, IUsuarioRepository
 {
-    private readonly AppDbContext _context;
 
     private readonly DbSet<Usuario> _db;
 
     public UsuarioRepository(AppDbContext context) : base(context)
     {
-        this._context = context;
-
         this._db = _context.Set<Usuario>();
     }
 
